@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>注册账号</title>
+    <!-- Bootstrap core CSS -->
+    <link href="static/asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}"
+          rel="stylesheet">
+    <!--<link th:href="@{/webjars/bootstrapValidator/0.5.2/dist/css/bootstrapValidator.min.css}" rel="stylesheet">    -->
+    <link href="asserts/css/bootstrapValidator.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="static/asserts/css/signin.css" th:href="@{asserts/css/signin.css}" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrapValidator/0.5.2/dist/js/bootstrapValidator.js}"></script>
+</head>
+<body class="text-center">
+<!--<form id="regform" class="form-signin"  th:action="@{/register}" method="post">-->
+<form id="regform" class="form-signin"  method="post" th:action="@{/register}">
+    <img class="mb-4" th:src="@{asserts/img/logo.jpg}" src="asserts/img/bootstrap-solid.svg" alt=""
+         width="99" height="99">
+    <h1 class="h5 mb-3 font-weight-normal" text="请注册">请注册</h1>
+    <!--判断-->
+    <div class="form-group">
+        <label class="sr-only" th:text="#{login.username}">Username</label>
+        <input id="username" type="text" name="username" class="form-control" placeholder="Username" th:placeholder="请输入手机号码" autofocus=""
+               pattern="^1[34578]\d{9}$" data-bv-regexp-message="pls" maxlength="11" minlength="11" onblur="checkuser()">
+        <p id="checkusername"></p>
+    </div>
+    <p></p>
+    <div class="form-group">
+    <label class="sr-only" th:text="#{login.password}">Password</label>
+    <input type="password" name="passwd" class="form-control" placeholder="Password" th:placeholder="请输入密码"
+           required data-bv-notempty-message="密码不能为空" maxlength="30" minlength="2"
+    >
+    <p></p>
+    </div>
+        <div class="form-group">
+    <label class="sr-only" th:text="#{login.password}">Password</label>
+    <input type="password" name="repassword" class="form-control" placeholder="Password" th:placeholder="确认密码"
+           required data-bv-notempty-message="密码不能为空" maxlength="30" minlength="2" >
+        </div>
+    <p></p>
+    <div class="checkbox mb-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-6" align="left">
+                    <input type="password" name="password" class="form-control" placeholder="Password"
+                           th:placeholder="请输入验证码" required="">
+                </div>
+                <div class="col-6 line-height: 100px;">
+                    <a class="link" th:href="@{/register}" text="点击获取验证码">点击获取验证码</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="checkbox mb-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                </div>
+                <div class="col-6">
+                    <button id="regbtn" class="btn btn-md btn-primary btn-block" type="submit"   th:text="注册账号">注册账号</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <a class="ext" href="/">用户许可协议</a>
+        </div>
+        <div class="col-6">
+            <a class="ext" href="/">登录已有帐号</a>
+        </div>
+    </div>
+    <p class="mt-5 mb-3 text-muted">© 2018-2019</p>
+</form>
+<script th:inline="javascript">
+    function checkuser() {
+        $.ajax({
+            url:  '/user/check',
+            data: {"username":$("#username").val()},
+            cache: false,
+            type: "Post",
+            async: false,//是否异步
+//            dataType: "jason",//返回的数据类型
+            success: function (data) {
+                if(data.status==521) {
+                    alert(data.msg,"提示");
+//                    $("#regbtn").attr("disabled",ture);
+//                    var message =data.msg;
+//                    $("#checkusername").attr("Text",message);
+                }
+            },
+            error: function () {
+                alert('数据繁忙，请稍后!');
+            }
+        })
+    }
+    var REG={
+        doSubmit:function() {
+            $.ajax({
+                url: "/register",
+                data:  $("#regform").serialize(),
+                type: "Post",
+                sucess:function(data) {
+                    if (data.status == 200) {
+                        Alert('用户注册成功，请登录！', "提示", function () {
+                            REG.login();
+                        });
+                    } else {
+                        Alert("注册失败！", "提示");
+                    }
+                }
+            })
+
+        },
+        login:function() {
+            location.href = "/login";
+            return false;
+        },
+    }
+
+//    var REG={
+//
+//        checkuser: function() {
+//            $.post(
+//                "/user/check",
+//                $("#username").serialize(),
+//                function (data) {
+//                    window.alert(data.message);
+//                },jason
+//
+//            )
+//        }
+//    }
+//    $(document).ready(function() {
+//        /**
+//         * 下面是进行插件初始化
+//         * 你只需传入相应的键值对
+//         * */
+//        $('#regform').bootstrapValidator({
+//            message: 'This value is not valid',
+//            feedbackIcons: {
+//                /*输入框不同状态，显示图片的样式*/
+//                valid: 'glyphicon glyphicon-ok',
+//                invalid: 'glyphicon glyphicon-remove',
+//                validating: 'glyphicon glyphicon-refresh'
+//            },
+//            live: 'enabled',
+//            submitButtons: 'button[type="submit"]',
+//            fields: {
+//                username: {
+//                    trigger: 'blur',
+//                    message: 'The username is not valid',
+//                    validators: {
+//                        notEmpty: {
+//                            /*非空提示*/
+//                            message: '用户名不能为空'
+//                        },
+//                        regexp: {
+//                            regexp: /^1[34578]\d{9}$/,
+//                            message: '请输入正确的手机号码'
+//                        }
+////                        remote: {
+////                            url: "<%=basePath%>/accountGroup/existAccountRepeat",
+////                            message: '用户组名已存在',
+////                            data:{id:function(){
+////                            return $("#defaultForm input[name='id']").val();
+////                            }}
+////                        }
+//                    }
+//                },
+//                passwd: {
+//                    message: '密码无效',
+//                    trigger: 'blur',
+//                    validators: {
+//                        notEmpty: {
+//                            message: '密码不能为空'
+//                        },
+//                        stringLength: {
+//                            min: 1,
+//                            max: 32,
+//                            message: '用户名长度必须在1到32之间'
+//                        }
+//                    }
+//                },
+//                repassword: {
+//                    message: '密码无效',
+//                    trigger: 'blur',
+//                    validators: {
+//                        identical: {//相同
+//                            field: 'passwd',
+//                            message: '两次密码不一致'
+//                        }
+//                    }
+//                }
+//            }
+//        })
+//    })
+//            .on('success.form.bv',function(){
+//            var flag = $('#form').data("bootstrapValidator").isValid();//校验合格
+//            if(flag){
+//                var $form = $('#form');
+//                $.ajax({
+//                    url:$form.attr('action'),
+//                    data:$form.serialize(),
+//                    type:'post',
+//                    success:function(data){
+//                    window.location.href='/login';
+//                },
+//                })
+//            }
+//            });
+
+//        $('#submit').click(function () {
+//            $('#regform').bootstrapValidator('validate');
+//        })
+
+//         $('#resetBtn').click(function() {
+//            $('#defaultForm').data('bootstrapValidator').resetForm(true);
+//        });
+//    });
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>登录</title>
+		<link  th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
+		<link  th:href="@{/webjars/bootstrapValidator/0.5.2/dist/css/bootstrapValidator.min.css}" rel="stylesheet">
+		<link th:href="@{asserts/css/signin.css}" rel="stylesheet">
+		<!--<script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>-->
+		<script type="text/javascript" src="asserts/js/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
+		<!--<script type="text/javascript" th:src="@{/webjars/bootstrap-validator/0.11.9/js/validator.js}"></script>-->
+		<script type="text/javascript" src="asserts/js/bootstrapValidator.js"></script>
+	</head>
+	<body class="text-center">
+	<h1>status:[[${status}]]</h1>
+	<h2>message:[[${message}]]</h2>
+	<h2>timestamp:[[${timestamp}]]</h2>
+	<h2>exception:[[${exception}]]</h2>
+	<h2>ext:[[${ext.code}]]</h2>
+	<h2>ext:[[${ext.message}]]</h2>
+	</body>
+
+</html>
